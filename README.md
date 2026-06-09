@@ -53,3 +53,7 @@ Este proyecto está configurado para despliegue continuo y se encuentra en produ
 
 * **URL de Producción:** [https://alejandro-xoxo.github.io/ProyectoIA_MiguelAcevdo-JuanQuintanilla/]
 
+**Desarrolladores:** 
+* Juan Pablo Quintanilla
+* Miguel Alejandro Acevedo Acevedo
+
