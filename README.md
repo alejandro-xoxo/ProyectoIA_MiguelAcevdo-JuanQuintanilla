@@ -52,3 +52,4 @@ En el directorio `/docs` de este repositorio se incluye[cite: 2]:
 Este proyecto está configurado para despliegue continuo y se encuentra en producción mediante **GitHub Pages**[cite: 2]. 
 
 * **URL de Producción:** [https://alejandro-xoxo.github.io/ProyectoIA_MiguelAcevdo-JuanQuintanilla/]
+
