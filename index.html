@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infusión – Código con café</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'system-ui', 'sans-serif'],
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0d0e0f;
+            color: #e3e2e2;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Utilidad para ocultar elementos en el flujo Vanilla */
+        .hidden-vanilla {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-[#0d0e0f] text-gray-200 antialiased font-sans flex flex-col justify-between selection:bg-[#b57edc]/40 selection:text-white">
+
+    <nav id="nav-header" class="fixed top-0 w-full z-50 bg-[#121414]/95 backdrop-blur-md border-b border-[#b57edc]/20 transition-all duration-300">
+        <div class="flex justify-between items-center px-6 lg:px-12 py-4 max-w-7xl mx-auto">
+            <div onclick="scrollToSection('inicio')" class="flex items-center gap-2 cursor-pointer group">
+                <div class="w-10 h-10 rounded-lg bg-[#b57edc]/10 flex items-center justify-center border border-[#b57edc]/30 group-hover:bg-[#b57edc]/20 transition-all">
+                    <i data-lucide="coffee" class="w-5 h-5 text-[#e2b6ff]"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif text-lg lg:text-xl font-bold text-[#e2b6ff] tracking-wider uppercase">INFUSIÓN</span>
+                    <span class="text-[10px] text-gray-400 tracking-widest font-mono uppercase -mt-1 leading-none">Código con café</span>
+                </div>
+            </div>
+
+            <div class="hidden md:flex items-center gap-10">
+                <button onclick="scrollToSection('inicio')" class="nav-link text-sm tracking-wide uppercase font-medium transition-all relative py-1 text-[#e2b6ff]" data-target="inicio">Inicio</button>
+                <button onclick="scrollToSection('nosotros')" class="nav-link text-sm tracking-wide uppercase font-medium transition-all relative py-1 text-gray-400 hover:text-white" data-target="nosotros">Nosotros</button>
+                <button onclick="scrollToSection('catalogo')" class="nav-link text-sm tracking-wide uppercase font-medium transition-all relative py-1 text-gray-400 hover:text-white" data-target="catalogo">Catálogo</button>
+                <button onclick="scrollToSection('innovacion')" class="nav-link text-sm tracking-wide uppercase font-medium transition-all relative py-1 text-gray-400 hover:text-white" data-target="innovacion">Match & Delivery</button>
+                <button onclick="scrollToSection('contacto')" class="nav-link text-sm tracking-wide uppercase font-medium transition-all relative py-1 text-gray-400 hover:text-white" data-target="contacto">Contacto</button>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button onclick="toggleCart()" class="relative p-2.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-white">
+                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                    <span id="cart-badge" class="hidden-vanilla absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#b57edc] text-[#49126e] text-xs font-bold flex items-center justify-center shadow-lg animate-pulse">0</span>
+                </button>
+                <button onclick="scrollToSection('innovacion')" class="hidden lg:block bg-[#b57edc] hover:bg-[#9B5DE5] text-[#49126e] px-5 py-2.5 rounded-lg font-semibold text-xs tracking-wider uppercase transition-transform active:translate-y-0.5 hover:shadow-lg hover:shadow-[#b57edc]/10">
+                    Coffee Match
+                </button>
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-300 hover:text-white">
+                    <i data-lucide="menu" class="w-6 h-6" id="mobile-menu-icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden-vanilla md:hidden bg-[#121414] border-b border-[#b57edc]/25 py-4 px-6 flex flex-col gap-4 animate-fade-in">
+            </div>
+    </nav>
+
+    <main class="flex-1">
+        
+        <section id="inicio" class="relative min-h-[90vh] flex items-center pt-28 pb-16 overflow-hidden px-6 lg:px-12 max-w-7xl mx-auto">
+            <div class="absolute top-1/4 right-0 w-80 h-80 bg-[#b57edc]/5 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute bottom-1/4 left-10 w-96 h-96 bg-[#e2b6ff]/5 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
+                <div class="space-y-6 text-left max-w-2xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#b57edc]/10 border border-[#b57edc]/25">
+                        <span class="w-2 h-2 rounded-full bg-[#e2b6ff] animate-pulse"></span>
+                        <span class="text-[11px] font-mono font-medium tracking-widest text-[#e2b6ff] uppercase flex items-center gap-1.5">
+                            <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+                            Suscripción Exclusive de Oficinas
+                        </span>
+                    </div>
+                    <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1]">
+                        Infusión: <br />
+                        <span class="italic font-normal text-[#e2b6ff]/95 block mt-2 font-serif">Código con Café</span>
+                    </h1>
+                    <div class="space-y-4">
+                        <p class="text-lg sm:text-xl font-medium text-gray-200 border-l-2 border-[#b57edc]/50 pl-4 font-serif italic">"Elevamos la productividad de tu equipo con un ecosistema de café de especialidad diseñado para el alto rendimiento."</p>
+                        <p class="text-sm sm:text-base text-gray-400 leading-relaxed">No es solo café, es ingeniería sensorial para espacios de trabajo modernos. Proporcionamos microlotes frescos cultivados de forma justa en Santander, calibrando la molienda según vuestro hardware y deadlines para mantener las mentes despiertas y enfocadas.</p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 pt-4 border-t border-white/5">
+                        <div><p class="text-xl sm:text-2xl font-bold font-serif text-[#e2b6ff]">86+</p><p class="text-[10px] text-gray-500 uppercase tracking-widest font-mono">Puntos SCA</p></div>
+                        <div><p class="text-xl sm:text-2xl font-bold font-serif text-[#e2b6ff]">48h</p><p class="text-[10px] text-gray-500 uppercase tracking-widest font-mono">Máximo Tueste</p></div>
+                        <div><p class="text-xl sm:text-2xl font-bold font-serif text-[#e2b6ff]">100%</p><p class="text-[10px] text-gray-500 uppercase tracking-widest font-mono">Justo y Directo</p></div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                        <button onclick="scrollToSection('innovacion')" class="bg-[#b57edc] hover:bg-[#9B5DE5] text-[#49126e] px-8 py-4 rounded-lg font-bold text-xs tracking-wider uppercase transition-transform active:translate-y-0.5 shadow-xl shadow-[#b57edc]/5 group flex items-center justify-center gap-2 cursor-pointer">
+                            Encontrar mi Coffee Match <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                        <button onclick="scrollToSection('nosotros')" class="border border-[#b57edc]/60 text-[#e2b6ff] hover:bg-[#b57edc]/5 px-8 py-4 rounded-lg font-bold text-xs tracking-wider uppercase transition-all flex items-center justify-center">
+                            Conocer Nuestra Historia
+                        </button>
+                    </div>
+                </div>
+
+                <div class="relative group lg:mt-0 mt-8">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-[#b57edc]/20 to-transparent rounded-2xl filter blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                    <div class="relative mx-auto max-w-sm lg:max-w-none">
+                        <div class="absolute top-5 left-5 right-[-20px] bottom-[-20px] border-2 border-[#b57edc]/35 rounded-2xl -z-10 transition-transform duration-700 group-hover:translate-x-2 group-hover:translate-y-2 pointer-events-none"></div>
+                        <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=600&auto=format&fit=crop&q=80" alt="Infusión de Café" class="rounded-2xl shadow-2xl grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 w-full aspect-[4/5] object-cover ring-1 ring-white/10">
+                        <div class="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-black/60 border border-white/10 p-4 rounded-xl text-left">
+                            <span class="text-[10px] text-[#e2b6ff] uppercase tracking-widest font-mono font-bold">Lote en tueste activo</span>
+                            <p class="text-white text-xs font-serif italic mt-0.5">"Esencias de Santander que propician soluciones técnicas y evitan de bugs de fatiga."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="nosotros" class="relative py-28 lg:py-32 bg-[#121414] overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 space-y-24">
+                <div class="max-w-4xl pt-4">
+                    <span class="text-xs uppercase tracking-[0.3em] font-mono text-[#e2b6ff] font-bold block mb-2">Desde la Vereda Almira, Santander</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">Nuestra Esencia, <br /><span class="italic font-normal text-[#e2b6ff]">Tradición Elevada</span></h2>
+                    <p class="text-gray-400 text-sm sm:text-base max-w-2xl mt-4 leading-relaxed">Cultivamos más que granos de café; seleccionamos la energía y herencia que impulsa el intelecto y la creatividad de los espacios corporativos más exigentes.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+                    <div class="relative group">
+                        <div class="absolute top-5 left-5 right-[-15px] bottom-[-15px] border-2 border-[#b57edc]/30 rounded-xl -z-10 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform duration-700"></div>
+                        <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600&auto=format&fit=crop&q=80" alt="Cosecha de café" class="rounded-xl shadow-2xl grayscale-[15%] group-hover:grayscale-0 transition-all duration-1000 w-full h-[380px] lg:h-[460px] object-cover">
+                        <div class="absolute top-4 left-4 bg-[#b57edc]/90 text-[#49126e] text-[10px] font-mono font-bold tracking-widest uppercase px-3 py-1.5 rounded shadow">Finca "La Tradición"</div>
+                    </div>
+                    <div class="space-y-6 text-left">
+                        <h3 class="font-serif text-2xl lg:text-3xl font-bold text-white tracking-tight">Legado en <span class="italic font-normal text-[#e4beff]">Almira</span></h3>
+                        <div class="border-l-3 border-[#b57edc] pl-6 py-2">
+                            <p class="font-serif italic text-base sm:text-lg text-gray-200">"Nacimos bajo la sombra de los guamos, donde el aire de Rionegro acaricia pacientemente cada cereza madura."</p>
+                        </div>
+                        <p class="text-sm sm:text-base text-gray-400 leading-relaxed">La historia de Infusión comienza en las empinadas y fértiles laderas de la Vereda Almira. Lo que empezó como un pequeño minifundio familiar se ha convertido en una alternativa estructurada para dignificar el esfuerzo del caficultor de Rionegro, conectando directamente el campo con el sector tecnológico de oficinas.</p>
+                        <p class="text-sm sm:text-base text-gray-400 leading-relaxed">Aquí, cada temporada es un acto de resistencia cultural y perfeccionamiento técnico. Cuidamos el secado solar directo y la recolección selectiva manual, refinando las materias primas con tuestes de precisión computarizada que destacan los descriptores frutales de su origen.</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2 p-8 sm:p-10 rounded-2xl bg-white/5 border border-white/5 hover:border-[#b57edc]/25 transition-all text-left flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-lg bg-[#b57edc]/10 border border-[#b57edc]/20 flex items-center justify-center text-[#e2b6ff]"><i data-lucide="heart-handshake" class="w-6 h-6"></i></div>
+                            <h3 class="font-serif text-2xl font-bold text-white">Nuestra Misión</h3>
+                            <p class="text-gray-300 text-sm sm:text-base leading-relaxed">Entregar un café de alta calidad sensorial maridado con un impacto de <span class="text-[#e2b6ff] font-semibold">justicia social real</span>. Transformamos por completo la cadena de suministro tradicional, asegurando que cada taza que beben vuestros desarrolladores sea un catalizador de progreso económico para las familias de Santander.</p>
+                        </div>
+                    </div>
+                    <div class="p-8 sm:p-10 rounded-2xl bg-[#b57edc]/15 border border-[#b57edc]/30 text-left flex flex-col justify-between hover:bg-[#b57edc]/20 transition-all">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center text-[#e2b6ff]"><i data-lucide="eye" class="w-6 h-6"></i></div>
+                            <h3 class="font-serif text-2xl font-bold text-white">Visión</h3>
+                            <p class="text-gray-200 text-xs sm:text-sm leading-relaxed">Convertirnos en el estándar absoluto de café de especialidad para industrias creativas y corporativas a nivel regional.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="catalogo" class="relative py-28 lg:py-32 bg-[#0d0e0f]">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 space-y-16">
+                <div class="max-w-4xl pt-4">
+                    <span class="text-xs uppercase tracking-[0.3em] font-mono text-[#e2b6ff] font-bold block mb-2">Selecciones de Cafetería Premium</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">Nuestro Menú</h2>
+                    <p class="text-gray-400 text-sm sm:text-base max-w-2xl mt-4 border-l-4 border-[#b57edc] pl-6 italic">Bebidas artesanales preparadas al instante y repostería recién horneada para potenciar vuestra jornada técnica.</p>
+                </div>
+
+                <div id="catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </div>
+        </section>
+
+        <section id="innovacion" class="relative py-28 lg:py-32 bg-[#121414] overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 space-y-24">
+                <div class="text-center space-y-3 max-w-3xl mx-auto">
+                    <span class="inline-block text-xs uppercase text-[#e2b6ff] tracking-[0.25em] font-mono font-bold bg-[#b57edc]/10 border border-[#b57edc]/25 px-4 py-1.5 rounded-full">Diferenciador Estratégico</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">Servicio Innovador</h2>
+                    <p class="text-gray-400 text-sm sm:text-base">Creamos experiencias inteligentes diseñadas para emparejar la química del café premium con el ritmo diario del programador.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-12 gap-8 items-stretch">
+                    <div class="lg:col-span-4 p-8 sm:p-10 rounded-2xl bg-gradient-to-br from-white/[0.03] to-transparent border border-white/5 flex flex-col justify-between text-left space-y-6">
+                        <div class="space-y-4">
+                            <div class="w-10 h-10 rounded-lg bg-[#b57edc]/10 border border-[#b57edc]/25 flex items-center justify-center text-[#e2b6ff]"><i data-lucide="sparkles" class="w-5 h-5 animate-pulse"></i></div>
+                            <h3 class="font-serif text-2xl font-bold text-white leading-tight">Coffee Match</h3>
+                            <p class="text-gray-400 text-xs sm:text-sm leading-relaxed">Nuestro asistente digital analiza vuestro estado neuro-cognitivo para recomendaros la infusión exacta en menos de un minuto.</p>
+                        </div>
+                    </div>
+                    <div id="wizard-container" class="lg:col-span-8 p-8 sm:p-10 rounded-2xl bg-white/[0.02] border border-[#b57edc]/20 flex flex-col justify-center min-h-[380px] shadow-2xl relative">
+                    </div>
+                </div>
+
+                <div id="desk-delivery" class="pt-24 border-t border-white/5 space-y-20">
+                    <div class="text-center max-w-3xl mx-auto space-y-4">
+                        <span class="text-[10px] uppercase font-mono tracking-[0.25em] text-[#e2b6ff] font-bold bg-[#b57edc]/10 border border-[#b57edc]/20 px-3.5 py-1.5 rounded-full inline-block">Suscripción de Alto Rendimiento para Oficinas</span>
+                        <h3 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">Infusión Desk-Delivery</h3>
+                    </div>
+                    <div class="grid lg:grid-cols-12 gap-8 items-center bg-white/[0.03] border border-white/5 rounded-2xl p-8 lg:p-12 relative overflow-hidden mt-12 shadow-2xl">
+                        <div class="lg:col-span-7 space-y-4 text-left">
+                            <span class="text-[10px] font-mono tracking-widest text-[#e2b6ff] uppercase font-bold flex items-center gap-2"><i data-lucide="trending-up" class="w-4 h-4"></i> Cotizador Ágil</span>
+                            <h4 class="font-serif text-2xl font-bold text-white">Cotiza el combustible sensorial para vuestro Workspace</h4>
+                        </div>
+                        <div class="lg:col-span-5 w-full bg-[#1e2020] border border-white/10 rounded-xl p-6 shadow-xl relative z-10" id="quote-form-container">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto" class="relative py-28 lg:py-32 bg-[#0d0e0f] text-white overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 space-y-20">
+                <div class="max-w-4xl text-left pt-4">
+                    <span class="text-xs uppercase tracking-[0.3em] font-mono text-[#e2b6ff] font-bold block mb-2">Hablemos de Buen Café</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">contacto directo</h2>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start relative">
+                    <div class="lg:col-span-5 space-y-8 text-left">
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-12 h-12 flex items-center justify-center rounded-full border border-white/10 text-[#e2b6ff]"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
+                                <div><h4 class="font-serif text-lg font-bold text-white">Ubicación de Origen</h4><p class="text-gray-400 text-xs sm:text-sm mt-1">Vereda Almira, Rionegro <br />Santander, Colombia</p></div>
+                            </div>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-12 h-12 flex items-center justify-center rounded-full border border-white/10 text-[#e2b6ff]"><i data-lucide="mail" class="w-5 h-5"></i></div>
+                                <div><h4 class="font-serif text-lg font-bold text-white">Correo Institucional</h4><p class="text-gray-400 text-xs sm:text-sm mt-1">hola@infusioncafe.com</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-7 bg-[#121414] border border-white/5 p-8 sm:p-10 rounded-2xl shadow-2xl relative" id="contact-form-container">
+                        </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#0b0c0d] border-t border-[#b57edc]/10 py-12 px-6 lg:px-12 text-center text-xs">
+        <div class="max-w-7xl mx-auto flex flex-col items-center gap-6 text-gray-500">
+            <p>© 2026 Infusión – Código con café. Tueste artesanal en la Vereda Almira, Rionegro, Santander, Colombia.</p>
+        </div>
+    </footer>
+
+    <div id="cart-overlay" class="fixed inset-0 z-50 overflow-hidden hidden-vanilla">
+        <div class="absolute inset-0 bg-[#0d0e0f]/80 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+            <div class="pointer-events-auto w-screen max-w-md">
+                <div class="flex h-full flex-col bg-[#121414] border-l border-[#b57edc]/20 shadow-2xl text-white">
+                    <div class="flex items-center justify-between px-6 py-5 border-b border-white/5">
+                        <h2 class="text-xl font-bold font-serif text-[#e2b6ff] flex items-center gap-2"><i data-lucide="shopping-cart" class="w-5 h-5 text-[#b57edc]"></i> Mi Pedido</h2>
+                        <button onclick="toggleCart()" class="p-1 rounded-lg text-gray-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+                    </div>
+                    <div id="cart-content" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+                    <div id="cart-footer" class="p-6 bg-[#1a1c1c] border-t border-white/5 space-y-4 hidden-vanilla"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. GESTIÓN DE ESTADO (AppState)
+        const state = {
+            cart: [],
+            isCartOpen: false,
+            isMobileMenuOpen: false,
+            wizard: { step: 1, feeling: '', activity: '', intensity: '', recommendation: null },
+            forms: { contactSubmitting: false, contactSubmitted: false, quoteSuccess: false },
+            products: [
+                { id: "prod-frappe", name: "Frappé de Caramelo", price: "$13.500", rawPrice: 13500, description: "Inyección helada de cafeína de especialidad licuada con caramelo artesanal de Santander.", category: "BEBIDA FRÍA", image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=600&auto=format&fit=crop&q=80", notes: ["Caramelo", "Cremoso", "Hielo"] },
+                { id: "prod-granizado", name: "Granizado de Café Clásico", price: "$11.500", rawPrice: 11500, description: "Nuestra infusión selectiva de Santander granizada al punto ideal.", category: "BEBIDA FRÍA", image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600&auto=format&fit=crop&q=80", notes: ["Fresco", "Café Concentrado"] },
+                { id: "prod-cappuccino", name: "Cappuccino Tradicional", price: "$8.500", rawPrice: 8500, description: "Equilibrio supremo de un shot doble de espresso de origen y una aterciopelada microespuma.", category: "BEBIDA CALIENTE", image: "https://images.unsplash.com/photo-1534778101976-62847782c213?w=600&auto=format&fit=crop&q=80", notes: ["Balanceado", "Microespuma"] },
+                { id: "prod-moca-blanco", name: "Moca Blanco", price: "$9.500", rawPrice: 9500, description: "Un espresso robusto fundido con chocolate blanco de origen sostenible y leche al vapor.", category: "BEBIDA CALIENTE", image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=600&auto=format&fit=crop&q=80", notes: ["Chocolate Blanco", "Espresso"] },
+                { id: "prod-galleta", name: "Galleta Artesanal", price: "$5.500", rawPrice: 5500, description: "Galleta recién horneada con chispas de cacao Santandereano al 70%.", category: "REPOSTERÍA", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&auto=format&fit=crop&q=80", notes: ["Cacao 70%", "Centro Meloso"] },
+                { id: "prod-croissant", name: "Croissant de Almendras", price: "$7.500", rawPrice: 7500, description: "Hojaldre crujiente elaborado con mantequilla premium y frangipane.", category: "REPOSTERÍA", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&auto=format&fit=crop&q=80", notes: ["Almendras", "Hojaldre"] }
+            ]
+        };
+
+        // 2. INICIALIZACIÓN
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderCatalog();
+            renderWizard();
+            renderForms();
+            setupScrollSpy();
+        });
+
+        // 3. RENDERIZADO DEL DOM Y CONTROLADORES
+        function renderCatalog() {
+            const container = document.getElementById('catalog-grid');
+            container.innerHTML = state.products.map(p => `
+                <article class="flex flex-col group rounded-xl overflow-hidden shadow-2xl border border-white/5 bg-[#121414] hover:border-[#b57edc]/30">
+                    <div class="relative overflow-hidden aspect-[4/5] bg-[#1a1c1c] shrink-0">
+                        <img src="${p.image}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter grayscale-[10%] group-hover:grayscale-0">
+                        <span class="absolute top-4 left-4 bg-[#b57edc] text-[#49126e] text-[10px] font-mono font-bold tracking-widest px-3 py-1.5 rounded-full shadow-lg">${p.category}</span>
+                    </div>
+                    <div class="bg-[#F4F4F4] p-6 flex flex-col justify-between flex-grow text-gray-900 border-t border-white/10">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-start gap-2">
+                                <h3 class="font-serif text-lg font-bold text-[#2f3131] group-hover:text-[#49126e]">${p.name}</h3>
+                                <span class="font-mono text-sm font-bold text-gray-800 bg-[#e5e2e1] px-2.5 py-1 rounded">${p.price}</span>
+                            </div>
+                            <p class="text-xs text-gray-600 leading-relaxed min-h-[48px]">${p.description}</p>
+                            <div class="flex flex-wrap gap-2 pt-1">
+                                ${p.notes.map(note => `<span class="inline-flex items-center gap-1 bg-white border border-[#988d9b]/35 px-2.5 py-1 rounded-full text-[10px] font-semibold text-[#474646] font-mono">${note}</span>`).join('')}
+                            </div>
+                        </div>
+                        <button onclick="addToCart('${p.id}', this)" class="w-full mt-6 py-3.5 rounded-lg font-bold text-xs uppercase tracking-wider transition-all bg-[#b57edc]/90 hover:bg-[#b57edc] text-[#49126e] flex items-center justify-center gap-2">
+                            Añadir al carrito
+                        </button>
+                    </div>
+                </article>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Lógica de Carrito
+        function addToCart(productId, btnEl) {
+            const product = state.products.find(p => p.id === productId) || state.products[0];
+            const existingItem = state.cart.find(i => i.product.id === productId);
+            if (existingItem) existingItem.quantity += 1;
+            else state.cart.push({ product, quantity: 1 });
+            
+            // UI Feedback
+            if(btnEl) {
+                const oldText = btnEl.innerHTML;
+                btnEl.innerHTML = `¡Añadido!`;
+                btnEl.classList.add('bg-green-600', 'text-white');
+                setTimeout(() => { btnEl.innerHTML = oldText; btnEl.classList.remove('bg-green-600', 'text-white'); }, 1500);
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(productId) {
+            state.cart = state.cart.map(i => i.product.id === productId ? { ...i, quantity: i.quantity - 1 } : i).filter(i => i.quantity > 0);
+            updateCartUI();
+        }
+
+        function toggleCart() {
+            state.isCartOpen = !state.isCartOpen;
+            document.getElementById('cart-overlay').classList.toggle('hidden-vanilla');
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalItems = state.cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = state.cart.reduce((sum, item) => sum + item.product.rawPrice * item.quantity, 0);
+            
+            const badge = document.getElementById('cart-badge');
+            if (totalItems > 0) {
+                badge.textContent = totalItems;
+                badge.classList.remove('hidden-vanilla');
+            } else {
+                badge.classList.add('hidden-vanilla');
+            }
+
+            const content = document.getElementById('cart-content');
+            const footer = document.getElementById('cart-footer');
+
+            if (state.cart.length === 0) {
+                content.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-center space-y-4 text-gray-400"><p class="text-sm">Vuestro pedido esta vacío.</p></div>`;
+                footer.classList.add('hidden-vanilla');
+            } else {
+                content.innerHTML = state.cart.map(item => `
+                    <div class="flex items-center gap-4 p-3 rounded-lg bg-white/5 border border-white/5">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between"><h4 class="font-semibold text-sm text-white">${item.product.name}</h4><p class="text-sm font-semibold text-[#e2b6ff]">${item.product.price}</p></div>
+                            <p class="text-xs text-gray-400">Cantidad: ${item.quantity}</p>
+                        </div>
+                        <button onclick="removeFromCart('${item.product.id}')" class="text-red-400 p-2"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                `).join('');
+                footer.innerHTML = `
+                    <div class="flex justify-between text-base"><span class="text-gray-400">Total aprox:</span><span class="font-bold text-xl text-[#e2b6ff] font-mono">$${totalPrice.toLocaleString('es-CO')} COP</span></div>
+                    <button onclick="alert('Funcionalidad de pago simulada completada.'); state.cart=[]; updateCartUI(); toggleCart();" class="w-full bg-[#b57edc] text-[#49126e] py-3 rounded-lg font-bold text-sm uppercase">Confirmar y Encargar</button>
+                `;
+                footer.classList.remove('hidden-vanilla');
+            }
+            lucide.createIcons();
+        }
+
+        // Lógica Wizard Coffee Match
+        function renderWizard() {
+            const container = document.getElementById('wizard-container');
+            const { step, recommendation } = state.wizard;
+            
+            if (step === 1) {
+                container.innerHTML = `
+                    <div class="space-y-6 text-left animate-fade-in">
+                        <span class="text-[10px] font-mono uppercase text-[#e2b6ff] font-bold">Paso 1 de 3</span>
+                        <h4 class="font-serif text-xl sm:text-2xl font-bold text-white">¿Cómo te sientes en el día de hoy?</h4>
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            ${[['cansado', 'Cansado'], ['normal', 'Normal'], ['energetico', 'Con energía']].map(([val, label]) => `
+                                <button onclick="setWizardVal('feeling', '${val}')" class="p-5 rounded-xl bg-white/5 border border-white/5 hover:border-[#b57edc]/50 text-left text-white group"><p class="font-bold text-[#e2b6ff]">${label}</p></button>
+                            `).join('')}
+                        </div>
+                    </div>`;
+            } else if (step === 2) {
+                container.innerHTML = `
+                    <div class="space-y-6 text-left animate-fade-in">
+                        <span class="text-[10px] font-mono uppercase text-[#e2b6ff] font-bold">Paso 2 de 3</span>
+                        <h4 class="font-serif text-xl sm:text-2xl font-bold text-white">¿Qué actividad principal vas a realizar?</h4>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            ${[['programar', '💻 Programar / Depurar'], ['estudiar', '📚 Estudiar / Investigar'], ['reunion', '🤝 Reunión / Brainstorming'], ['administrativo', '📄 Trabajo Administrativo']].map(([val, label]) => `
+                                <button onclick="setWizardVal('activity', '${val}')" class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-[#b57edc]/50 text-left text-white group"><p class="font-bold text-[#e2b6ff]">${label}</p></button>
+                            `).join('')}
+                        </div>
+                    </div>`;
+            } else if (step === 3) {
+                container.innerHTML = `
+                    <div class="space-y-6 text-left animate-fade-in">
+                        <span class="text-[10px] font-mono uppercase text-[#e2b6ff] font-bold">Paso 3 de 3</span>
+                        <h4 class="font-serif text-xl sm:text-2xl font-bold text-white">¿Qué intensidad sensorial prefieres?</h4>
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            ${[['suave', 'Suave'], ['media', 'Media'], ['fuerte', 'Fuerte']].map(([val, label]) => `
+                                <button onclick="setWizardVal('intensity', '${val}')" class="p-5 rounded-xl bg-white/5 border border-white/5 hover:border-[#b57edc]/50 text-left text-white group"><p class="font-bold text-[#e2b6ff]">${label}</p></button>
+                            `).join('')}
+                        </div>
+                    </div>`;
+            } else if (step === 4) {
+                // Mock Recommendation Logic
+                const rec = { name: "Espresso Doble Programador", description: "Choque robusto de cafeína premium.", price: "$9.500", rawPrice: 9500, id: "prod-match", category: "MATCH EXPERT", image: "https://images.unsplash.com/photo-1534778101976-62847782c213?w=600&auto=format&fit=crop&q=80" };
+                state.wizard.recommendation = rec;
+                container.innerHTML = `
+                    <div class="space-y-6 text-left animate-fade-in">
+                        <span class="text-[10px] font-mono uppercase text-[#e2b6ff] bg-[#b57edc]/10 px-3 py-1 rounded border border-[#b57edc]/25 tracking-widest font-bold">🍿 ¡VUESTRO COFFEE MATCH!</span>
+                        <h4 class="font-serif text-2xl font-bold text-white mt-4">${rec.name}</h4>
+                        <p class="text-xs text-gray-400">${rec.description}</p>
+                        <div class="flex gap-4 mt-6">
+                            <button onclick="addToCart('prod-match', this); state.products.push(state.wizard.recommendation)" class="bg-[#b57edc] text-[#49126e] px-4 py-3 rounded font-bold text-xs uppercase">Añadir al Carrito</button>
+                            <button onclick="state.wizard.step=1; renderWizard()" class="border border-white/10 px-4 py-3 rounded text-xs text-gray-400">Reiniciar</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function setWizardVal(key, val) {
+            state.wizard[key] = val;
+            state.wizard.step += 1;
+            renderWizard();
+        }
+
+        // Formularios
+        function renderForms() {
+            // Contact
+            document.getElementById('contact-form-container').innerHTML = state.forms.contactSubmitted ? 
+                `<div class="text-center text-green-400 font-bold py-10">¡Mensaje Enviado con Éxito!</div>` :
+                `<form onsubmit="handleContact(event)" class="space-y-5">
+                    <input type="text" required placeholder="Tu nombre" class="w-full bg-[#1e2020] border border-white/10 rounded-lg px-4 py-3 text-sm text-white">
+                    <input type="email" required placeholder="email@ejemplo.com" class="w-full bg-[#1e2020] border border-white/10 rounded-lg px-4 py-3 text-sm text-white">
+                    <textarea required rows="4" placeholder="¿Cómo podemos ayudarte?" class="w-full bg-[#1e2020] border border-white/10 rounded-lg px-4 py-3 text-sm text-white"></textarea>
+                    <button type="submit" class="w-full py-4 rounded-lg font-bold text-xs uppercase bg-[#b57edc] text-[#49126e]">Enviar Mensaje</button>
+                </form>`;
+            
+            // Quote (Desk-Delivery)
+            document.getElementById('quote-form-container').innerHTML = state.forms.quoteSuccess ? 
+                `<div class="text-center py-8 text-green-400 font-bold">¡Propuesta Solicitada!</div>` :
+                `<form onsubmit="handleQuote(event)" class="space-y-4">
+                    <select class="w-full bg-[#121414] border border-white/10 rounded px-3 py-2 text-xs text-white"><option>Equipo (5 - 15 personas)</option></select>
+                    <input type="email" required placeholder="ingenieria@vuestraempresa.com" class="w-full bg-[#121414] border border-white/10 rounded px-3 py-2 text-xs text-white">
+                    <button type="submit" class="w-full py-3 bg-[#b57edc] text-[#49126e] rounded font-bold text-xs uppercase">Obtener Propuesta por email</button>
+                </form>`;
+        }
+
+        function handleContact(e) { e.preventDefault(); state.forms.contactSubmitted = true; renderForms(); }
+        function handleQuote(e) { e.preventDefault(); state.forms.quoteSuccess = true; renderForms(); }
+
+        // Navegación
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if(el) {
+                const y = el.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }
+        }
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden-vanilla');
+        }
+
+        // Scroll Spy para Navegación Activa
+        function setupScrollSpy() {
+            window.addEventListener('scroll', () => {
+                const sections = ['inicio', 'nosotros', 'catalogo', 'innovacion', 'contacto'];
+                const scrollPos = window.scrollY + 200;
+                sections.forEach(sec => {
+                    const el = document.getElementById(sec);
+                    if(el && scrollPos >= el.offsetTop && scrollPos < (el.offsetTop + el.offsetHeight)) {
+                        document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('text-[#e2b6ff]'));
+                        const activeBtn = document.querySelector(`.nav-link[data-target="${sec}"]`);
+                        if(activeBtn) activeBtn.classList.add('text-[#e2b6ff]');
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
